@@ -2,7 +2,7 @@
 * api配置文件转化为方法
 * 解决param路径痛点
 ## Introduce
-对暴露get,post接口的实例（例如axios、fly.io）二度封装
+对暴露get,post之类接口的实例（例如axios、fly.io）二度封装
 ```
 // 默认提供了
 let defaultOptions = {
