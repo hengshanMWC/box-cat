@@ -35,12 +35,11 @@ export default class Film {
     this.options = Object.assign({}, defaultOptions, options)
   }
   apiFor () {
-    let _this = this
-    Object.keys(_this.server).forEach(key => {
-      let method = _this.getMethod(key)
+    Object.keys(this.server).forEach(key => {
+      let method = this.getMethod(key)
       if (method) {
-        let fn = _this.newFunction(method, _this.server[key])
-        Object.defineProperty(_this, key, { value: fn })
+        let fn = this.newFunction(method, this.server[key])
+        Object.defineProperty(this, key, { value: fn })
       } else {
         console.warn(`film:没有匹配到${key}所需的请求方式`)
       }
@@ -48,17 +47,17 @@ export default class Film {
   }
   getMethod (name) {
     let methods = this.options.methods
-    return Object.keys(this.options.methods).find(key => methods[key].find(val => name.toLocaleLowerCase().indexOf(val.toLocaleLowerCase()) !== -1))
+    return Object.keys(this.options.methods).find(key => methods[key].find(val => name.toLocaleLowerCase().includes(val.toLocaleLowerCase())))
   }
   newFunction (method, url) {
-    let _this = this
     let urls = url.split(/:[^/]+/g)
+    let params = url.match(/:[^/]+/g)
     return (id, data, config) => {
-      return _this.host[method](..._this.getParam(urls, id, data, config))
+      return this.host[method](...this.getParam(urls, params, id, data, config))
     }
   }
   // 解析params路径
-  getParam (urls, id, data, config) {
+  getParam (urls, params, id, data, config) {
     let _config = this.options.config
     if (urls.length === 1) {
       return [
@@ -68,8 +67,15 @@ export default class Film {
       ]
     } else {
       let url
-      if (Array.isArray(id)) {
-        url = id.reduce((total, currentValue, index) => total + currentValue + urls[index + 1], urls[0])
+      if (typeof id === 'object') {
+        let arr = []
+        let i, str
+        for (let key in id) {
+          str = ':' + key
+          i = params.findIndex(param => param === str)
+          if (i !== -1) arr[i] = id[key]
+        }
+        url = arr.reduce((total, currentValue, index) => total + currentValue + urls[index + 1], urls[0])
       } else {
         url = urls[0] + id + urls[1]
       }
