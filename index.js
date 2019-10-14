@@ -1,4 +1,4 @@
-export default class Film {
+export default class BoxCat {
   /**
    * constructor
    * @param {object} host http请求库实例

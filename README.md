@@ -6,26 +6,13 @@
 
 通过api管理文件和HTTP 库的实例（例如axios、fly.io）进行二度封装，实现集中管理api文档
 ```
-// 默认提供了
-let defaultOptions = {
-  methods: {
-    'get': ['get'],
-    'post': ['post'],
-    'put': ['put'],
-    'delete': ['delete'],
-    'options': ['options'],
-    'head': ['head'],
-    'trace': ['trace'],
-    'connect': ['connect']
-  }
-}
 // api管理文件的key只要匹配到其中的methods方法名(不区分大小写)就会生成对应的以key为名的方法
 const server = {
   // 公共
   postFile: 'wap/file', // * 上传图片
   deleteFile: 'wap/files/:imgId', // * 删除图片
 }
-let http = new Film(fiy, server)
+let http = new BoxCat(fiy, server)
 // 方法返回的是fiy
 http.postFile({id: 1})
 /*
@@ -39,7 +26,7 @@ await http.deleteFile({
 ```
 ## Options
 ```
-new Film(host, server, {
+new BoxCat(host, server, {
   methods: {
     'get': ['get'],
     'post': ['post'],
