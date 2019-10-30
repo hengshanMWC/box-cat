@@ -33,7 +33,8 @@ new BoxCat(host, server, {
     'options': ['options'],
     'head': ['head'],
     'trace': ['trace'],
-    'connect': ['connect']
+    'connect': ['connect'],
+    'patch': ['patch']
   },
   RegExp: /:[^/]+/g
   mergeMethods: {},
