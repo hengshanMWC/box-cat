@@ -27,7 +27,8 @@ export default class BoxCat {
         'options': ['options'],
         'head': ['head'],
         'trace': ['trace'],
-        'connect': ['connect']
+        'connect': ['connect'],
+        'patch': ['patch']
       },
       RegExp: /:[^/]+/g
     }
