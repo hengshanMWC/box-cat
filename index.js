@@ -14,6 +14,9 @@ export default class BoxCat {
     this.defaults(options)
     this.apiFor()
   }
+  get RegExp () {
+    return new RegExp(this.options.RegExp)
+  }
   defaults (options) {
     let defaultOptions = {
       methods: {
@@ -25,7 +28,8 @@ export default class BoxCat {
         'head': ['head'],
         'trace': ['trace'],
         'connect': ['connect']
-      }
+      },
+      RegExp: /:[^/]+/g
     }
     if (options.mergeMethods) {
       let mergeMethods = options.mergeMethods
@@ -50,8 +54,8 @@ export default class BoxCat {
     return Object.keys(this.options.methods).find(key => methods[key].find(val => name.toLocaleLowerCase().includes(val.toLocaleLowerCase())))
   }
   newFunction (method, url) {
-    let urls = url.split(/:[^/]+/g)
-    let params = url.match(/:[^/]+/g)
+    let urls = url.split(this.RegExp)
+    let params = url.match(this.RegExp)
     return (id, data, config) => {
       return this.host[method](...this.getParam(urls, params, id, data, config))
     }

@@ -1,9 +1,7 @@
 ## Features
-* api管理文件转化为方法
+* 接口文档集中化
 * 解决param路径痛点
 ## introduction
-平常：如果把接口文档都写在一个文件上(api)进行集中管理，调用的时候直接axios.get(api.api)。但是有时候有一些接口的路径是需要传params，你只能直接把接口路径裸露在外，手动拼接，这时候接口集中管理就会变得十分鸡肋。而box-cat就是为了解决这个。
-
 通过api管理文件和HTTP 库的实例（例如axios、fly.io）进行二度封装，实现集中管理api文档
 ```
 // api管理文件的key只要匹配到其中的methods方法名(不区分大小写)就会生成对应的以key为名的方法
@@ -37,6 +35,7 @@ new BoxCat(host, server, {
     'trace': ['trace'],
     'connect': ['connect']
   },
+  RegExp: /:[^/]+/g
   mergeMethods: {},
   config: {}
 })
@@ -53,3 +52,6 @@ api的管理文件，key不区分大小写
 合并methods
 #### config
 其他配置
+#### RegExp
+params的正则
+默认 /:[^/]+/g
