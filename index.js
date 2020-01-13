@@ -44,7 +44,7 @@ export default class BoxCat {
       let method = this.getMethod(key)
       if (method) {
         let fn = this.newFunction(method, this.server[key])
-        Object.defineProperty(this, key, { value: fn })
+        this[key] = fn
       } else {
         console.warn(`film:没有匹配到${key}所需的请求方式`)
       }
