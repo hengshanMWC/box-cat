@@ -1,16 +1,16 @@
 export default class BoxCat {
   /**
    * constructor
-   * @param {object} host http请求库实例
    * @param {object} server 接口
+   * @param {object} host http请求库实例
    * @param {object} options 其他参数
    * @param {Object} [options->methods = 常用的methods]
    * @param {Object} options->mergeMethods 合并methods
    * @param {Object} options->config 默认的请求配置
    */
-  constructor (host, server, options = {}) {
-    this.host = host
+  constructor (server, host , options = {}) {
     this.server = server
+    this.host = host
     this.defaults(options)
     this.apiFor()
   }
