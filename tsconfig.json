@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "lib": [
+      "ES6",
+      "DOM"
+    ]
+  }
+}
