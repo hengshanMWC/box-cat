@@ -1,8 +1,31 @@
-import { ObjectString, ObjectStrings, Engine, Options } from './interface'
-import { getFormat, getESC, getRegFinish, createSliceRegExp, createParamsRegExp } from './regExp'
-export class BoxCat {
+import { getFormat, getESC, getRegFinish, createSliceRegExp, createParamsRegExp } from './utils/regExp'
+interface ObjectString {
+  [params: string]: string
+}
+interface ObjectStrings {
+  readonly [params: string]: string[]
+}
+type MethodsRule =
+  'startsWith' |
+  'endsWith' |
+  'includes'
+interface Engine {
+  get: Function,
+  post: Function,
+  put: Function,
+  delete: Function,
+  [params: string]: any,
+}
+interface Options {
+  readonly methods?: ObjectStrings,
+  mergeMethods?: ObjectStrings,
+  config?: object,
+  methodsRule?: MethodsRule,
+  readonly rule?: string
+}
+export default class BoxCat {
   server: ObjectString
-  engine: object
+  engine: Engine
   options: Options
   sliceRegExp: RegExp
   paramsRegExp: RegExp
@@ -11,15 +34,20 @@ export class BoxCat {
     this.engine = engine
     this.defaults(options)
     this.apiFor()
+    // if (typeof Proxy === 'function') {
+    //   return this.createProxy()
+    // } else {
+    //   this.apiFor()
+    // }
   }
-  private createRegExp (str: string) {
+  private createRegExp (str: string): void {
     const arr: string[] = getFormat(str)
     arr[0] = getESC(arr[0])
     this.paramsRegExp = createParamsRegExp(arr[0], arr[1])
     arr[1] = getRegFinish(arr[1])
     this.sliceRegExp = createSliceRegExp(arr[0], arr[1])
   }
-  private defaults (options: Options) {
+  private defaults (options: Options): void {
     const defaultOptions: Options = {
       methods: {
         'get': ['get'],
@@ -43,10 +71,13 @@ export class BoxCat {
     this.options = Object.assign({}, defaultOptions, options)
     this.createRegExp(this.options.rule)
   }
-  private apiFor () {
+  // private createProxy () {
+  //   return new Proxy(this, {})
+  // }
+  private apiFor (): void {
     Object.keys(this.server).forEach(this.createIng)
   }
-  private createIng (key: string) {
+  private createIng (key: string): void {
     const method: string = this.getMethod(key)
     if (method && this.engine[method]) {
       const fn: Function = this.newFunction(method, this.server[key])
@@ -60,7 +91,7 @@ export class BoxCat {
   private getMethod (name: string): string {
     const methods: ObjectStrings = this.options.methods
     return Object.keys(this.options.methods)
-            .find(key => methods[key].find(val => name.toLocaleLowerCase()[this.options.methodsRule](val.toLocaleLowerCase())))
+            .find(key => !!methods[key].find(val => name.toLocaleLowerCase()[this.options.methodsRule](val.toLocaleLowerCase())))
   }
   private newFunction (method: string, url: string): Function {
     const urls: string[] = url.split(this.sliceRegExp)
