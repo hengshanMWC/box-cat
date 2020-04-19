@@ -1,32 +1,25 @@
-import { Methods, Options } from './interface'
-import { getFormat, getESC, getRegFinish, createRegExp } from './regExp'
+import { ObjectString, ObjectStrings, Engine, Options } from './interface'
+import { getFormat, getESC, getRegFinish, createSliceRegExp, createParamsRegExp } from './regExp'
 export class BoxCat {
-  /**
-   * constructor
-   * @param {object} server 接口
-   * @param {object} fetch http请求库实例
-   * @param {object} options 其他参数
-   * @param {Object} [options->methods = 常用的methods]
-   * @param {Object} options->mergeMethods 合并methods
-   * @param {Object} options->config 默认的请求配置
-   */
-  server: object
-  fetch: object
+  server: ObjectString
+  engine: object
   options: Options
-  regExp: RegExp
-  constructor (server: object, fetch: object , options: Options = {}) {
+  sliceRegExp: RegExp
+  paramsRegExp: RegExp
+  constructor (server: ObjectString, engine: Engine , options: Options = {}) {
     this.server = server
-    this.fetch = fetch
+    this.engine = engine
     this.defaults(options)
     this.apiFor()
   }
-  private createRegExp (str): RegExp {
+  private createRegExp (str: string) {
     const arr: string[] = getFormat(str)
     arr[0] = getESC(arr[0])
-    arr[1] = getESC(arr[1])
-    return createRegExp(arr[0], arr[1])
+    this.paramsRegExp = createParamsRegExp(arr[0], arr[1])
+    arr[1] = getRegFinish(arr[1])
+    this.sliceRegExp = createSliceRegExp(arr[0], arr[1])
   }
-  private defaults (options) {
+  private defaults (options: Options) {
     const defaultOptions: Options = {
       methods: {
         'get': ['get'],
@@ -39,40 +32,45 @@ export class BoxCat {
         'connect': ['connect'],
         'patch': ['patch']
       },
-      rule: ':key'
+      rule: ':param',
+      methodsRule: 'startsWith'
     }
     if (options.mergeMethods) {
-      const mergeMethods: Methods = options.mergeMethods
+      const mergeMethods: ObjectStrings = options.mergeMethods
       delete options.mergeMethods
       Object.assign(defaultOptions.methods, mergeMethods)
     }
     this.options = Object.assign({}, defaultOptions, options)
-    this.regExp = this.createRegExp(this.options.rule)
+    this.createRegExp(this.options.rule)
   }
   private apiFor () {
-    Object.keys(this.server).forEach(key => {
-      const method: string = this.getMethod(key)
-      if (method) {
-        const fn: Function = this.newFunction(method, this.server[key])
-        this[key] = fn
-      } else {
-        console.warn(`film:没有匹配到${key}所需的请求方式`)
-      }
-    })
+    Object.keys(this.server).forEach(this.createIng)
   }
-  private getMethod (name: string) {
-    const methods: Methods = this.options.methods
-    return Object.keys(this.options.methods).find(key => methods[key].find(val => name.toLocaleLowerCase().includes(val.toLocaleLowerCase())))
+  private createIng (key: string) {
+    const method: string = this.getMethod(key)
+    if (method && this.engine[method]) {
+      const fn: Function = this.newFunction(method, this.server[key])
+      this[key] = fn
+    } else if (this.engine[method]) {
+      console.warn(`BoxCat:engine没有${method}方法`)
+    } else {
+      console.warn(`BoxCat:没有匹配到${key}所需的请求方式`)
+    }
   }
-  private newFunction (method: string, url: string) {
-    const urls: string[] = url.split(this.regExp)
-    const params: string[] = url.match(this.regExp)
-    return (id, data, config) => {
-      return this.fetch[method](...this.getParam(urls, params, id, data, config))
+  private getMethod (name: string): string {
+    const methods: ObjectStrings = this.options.methods
+    return Object.keys(this.options.methods)
+            .find(key => methods[key].find(val => name.toLocaleLowerCase()[this.options.methodsRule](val.toLocaleLowerCase())))
+  }
+  private newFunction (method: string, url: string): Function {
+    const urls: string[] = url.split(this.sliceRegExp)
+    const params: string[] = url.match(this.sliceRegExp).map(param => param.replace(this.paramsRegExp, '$1'))
+    return (id: number | string | object, data?: object, config?: object): Function => {
+      return this.engine[method](...this.getParam(urls, params, id, data, config))
     }
   }
   // 解析params路径
-  private getParam (urls: string[], params: string[], id: number | string | object, data: object, config: object) {
+  private getParam (urls: string[], params: string[], id: number | string | object, data?: object, config?: object): [string, number | string | object, object] {
     const _config: object = this.options.config
     if (urls.length === 1) {
       return [
@@ -86,7 +84,7 @@ export class BoxCat {
         const arr: string[] = []
         let i: number | string, str: string
         for (let key in id) {
-          str = '/' + key
+          str = key
           i = params.findIndex(param => param === str)
           if (i !== -1) arr[i] = '/' + id[key]
         }
