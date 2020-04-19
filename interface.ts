@@ -15,5 +15,6 @@ export interface Options {
   readonly methods?: ObjectStrings,
   mergeMethods?: ObjectStrings,
   config?: object,
+  methodsRule?: string,
   readonly rule?: string
 }
