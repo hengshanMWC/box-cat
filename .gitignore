@@ -5,9 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 selenium-debug.log
-*.js
 dist/
-
 # Editor directories and files
 .idea
 .vscode
