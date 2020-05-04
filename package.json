@@ -2,10 +2,13 @@
   "name": "box-cat",
   "version": "1.0.7",
   "description": "对暴露get,post之类接口的实例（例如axios、fly.io）二度封装",
-  "main": "/dist/boxCat.js",
+  "main": "/dist/boxCat.min.js",
+  "types": "/dist/index.d.ts",
   "scripts": {
     "build": "tsc && node build/rollup.config.js && node build/remove.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:cov": "jest --coverage",
+    "test": "jest",
+    "debugger": "node --inspect-brk ./node_modules/jest/bin/jest --runInBand --no-cache --no-watchman"
   },
   "repository": {
     "type": "git",
@@ -27,7 +30,12 @@
     "@babel/core": "^7.9.6",
     "@babel/plugin-transform-runtime": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
+    "@types/jest": "^25.2.1",
+    "axios": "^0.19.2",
+    "babel-jest": "^25.5.1",
     "camelcase": "^6.0.0",
+    "flyio": "^0.6.14",
+    "jest": "^25.5.4",
     "rollup": "^2.7.6",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-buble": "^0.19.8",
@@ -38,7 +46,10 @@
     "rollup-plugin-typescript2": "^0.27.0",
     "rollup-plugin-uglify-es": "0.0.1",
     "terser": "^4.6.13",
+    "ts-jest": "^25.4.0",
+    "ts-node": "^8.10.1",
     "typescript": "^3.8.3",
     "validate-npm-package-name": "^3.0.0"
-  }
+  },
+  "dependencies": {}
 }

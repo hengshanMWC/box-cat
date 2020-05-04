@@ -1,4 +1,5 @@
 import { getFormat, getESC, getRegFinish, createSliceRegExp, createParamsRegExp } from './utils/regExp'
+import createProxy from './utils/proxy'
 interface ObjectString {
   [params: string]: string
 }
@@ -34,20 +35,20 @@ export default class BoxCat {
     this.engine = engine
     this.defaults(options)
     this.apiFor()
-    // if (typeof Proxy === 'function') {
-    //   return this.createProxy()
-    // } else {
-    //   this.apiFor()
-    // }
+    if (typeof Proxy === 'function') {
+      return createProxy(this)
+    } else {
+      this.apiFor()
+    }
   }
-  private createRegExp (str: string): void {
+  protected createRegExp (str: string): void {
     const arr: string[] = getFormat(str)
     arr[0] = getESC(arr[0])
     this.paramsRegExp = createParamsRegExp(arr[0], arr[1])
     arr[1] = getRegFinish(arr[1])
     this.sliceRegExp = createSliceRegExp(arr[0], arr[1])
   }
-  private defaults (options: Options): void {
+  protected defaults (options: Options): void {
     const defaultOptions: Options = {
       methods: {
         'get': ['get'],
@@ -71,13 +72,10 @@ export default class BoxCat {
     this.options = Object.assign({}, defaultOptions, options)
     this.createRegExp(this.options.rule)
   }
-  // private createProxy () {
-  //   return new Proxy(this, {})
-  // }
-  private apiFor (): void {
-    Object.keys(this.server).forEach(this.createIng)
+  protected apiFor (): void {
+    Object.keys(this.server).forEach(this.createIng.bind(this))
   }
-  private createIng (key: string): void {
+  protected createIng (key: string): void {
     const method: string = this.getMethod(key)
     if (method && this.engine[method]) {
       const fn: Function = this.newFunction(method, this.server[key])
@@ -88,20 +86,24 @@ export default class BoxCat {
       console.warn(`BoxCat:没有匹配到${key}所需的请求方式`)
     }
   }
-  private getMethod (name: string): string {
+  protected getMethod (name: string): string {
     const methods: ObjectStrings = this.options.methods
     return Object.keys(this.options.methods)
             .find(key => !!methods[key].find(val => name.toLocaleLowerCase()[this.options.methodsRule](val.toLocaleLowerCase())))
   }
-  private newFunction (method: string, url: string): Function {
+  protected newFunction (method: string, url: string): Function {
     const urls: string[] = url.split(this.sliceRegExp)
-    const params: string[] = url.match(this.sliceRegExp).map(param => param.replace(this.paramsRegExp, '$1'))
+    let params: string[] = []
+    const urlMatch: string[] = url.match(this.sliceRegExp)
+    if (urlMatch) {
+      params = urlMatch.map(param => param.replace(this.paramsRegExp, '$1'))
+    }
     return (id: number | string | object, data?: object, config?: object): Function => {
       return this.engine[method](...this.getParam(urls, params, id, data, config))
     }
   }
   // 解析params路径
-  private getParam (urls: string[], params: string[], id: number | string | object, data?: object, config?: object): [string, number | string | object, object] {
+  protected getParam (urls: string[], params: string[], id: number | string | object, data?: object, config?: object): [string, number | string | object, object] {
     const _config: object = this.options.config
     if (urls.length === 1) {
       return [
@@ -113,15 +115,14 @@ export default class BoxCat {
       let url: string
       if (typeof id === 'object') {
         const arr: string[] = []
-        let i: number | string, str: string
+        let i: number | string
         for (let key in id) {
-          str = key
-          i = params.findIndex(param => param === str)
+          i = params.findIndex(param => param === key)
           if (i !== -1) arr[i] = '/' + id[key]
         }
-        url = arr.reduce((total, currentValue, index) => total + currentValue + urls[index + 1], urls[0])
+        url = arr.reduce((total, currentValue, index) => `${total}/${currentValue}${urls[index + 1]}`, urls[0])
       } else {
-        url = urls[0] + id + urls[1]
+        url = `${urls[0]}/${id}${urls[1]}`
       }
       return [
         url,

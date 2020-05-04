@@ -1,6 +1,12 @@
 .DS_Store
 node_modules/
+/coverage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+selenium-debug.log
 dist/
+src/**/*.js
 # Editor directories and files
 .idea
 .vscode

@@ -85,7 +85,6 @@ const genConfig  = key => {
           "@babel/preset-env",
         ],
         plugins: [
-          // "@babel/plugin-proposal-class-properties",
           [
             "@babel/plugin-transform-runtime",
             {
