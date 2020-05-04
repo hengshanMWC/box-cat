@@ -22,3 +22,8 @@ postcss.config.js
 index.html
 .prettierrc.js
 AddComponent.md
+.vscode
+test/
+babel.config.js
+jest.config.js
+tsconfig.json
