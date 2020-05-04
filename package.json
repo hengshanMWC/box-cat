@@ -2,8 +2,9 @@
   "name": "box-cat",
   "version": "1.0.7",
   "description": "对暴露get,post之类接口的实例（例如axios、fly.io）二度封装",
-  "main": "index.js",
+  "main": "/dist/boxCat.js",
   "scripts": {
+    "build": "tsc && node build/rollup.config.js && node build/remove.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +22,23 @@
   "bugs": {
     "url": "https://github.com/hengshanMWC/film/issues"
   },
-  "homepage": "https://github.com/hengshanMWC/film#readme"
+  "homepage": "https://github.com/hengshanMWC/film#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "camelcase": "^6.0.0",
+    "rollup": "^2.7.6",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-buble": "^0.19.8",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^3.1.1",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-typescript2": "^0.27.0",
+    "rollup-plugin-uglify-es": "0.0.1",
+    "terser": "^4.6.13",
+    "typescript": "^3.8.3",
+    "validate-npm-package-name": "^3.0.0"
+  }
 }
