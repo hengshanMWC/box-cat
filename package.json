@@ -1,6 +1,6 @@
 {
   "name": "box-cat",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "对暴露get,post之类接口的实例（例如axios、fly.io）二度封装",
   "main": "/dist/boxCat.min.js",
   "types": "/dist/index.d.ts",
