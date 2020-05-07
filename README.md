@@ -2,7 +2,7 @@
 * 接口文档集中化
 * 解决param路径痛点
 ## introduction
-通过api管理文件和HTTP 库的实例（例如axios、fly.js）进行二度封装，实现api文档集中管理
+通过api管理文件和HTTP请求库（例如axios、fly.js）进行二度封装，实现api文档集中管理
 ```
 // api管理文件的key只要匹配到其中的methods方法名(不区分大小写)就会生成对应的以key为名的方法
 const server = {
@@ -14,7 +14,7 @@ let http = new BoxCat(server, axios)
 // 方法返回的是promise(相当于axios())
 http.postFile({id: 1})
 /*
-* 如果是param，第一个路径是params，第二个是data，第3个是http请求库的其他配置项。非param则第一个是data，第二个是其他配置项
+* 如果路径带的有param，第一个参数是params，第二个是data，第3个是http请求库的其他配置项。非param则第一个是data，第二个是其他配置项
 * 当你有多段param的时候，传的是对象
 */ 
 http.deleteFile(1).then().catch()
