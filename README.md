@@ -1,10 +1,10 @@
 ## Features
-* 接口文档集中化
+* 接口文档集中化维护
 * 解决param路径痛点
 ## introduction
-通过api管理文件和HTTP请求库（例如axios、fly.js）进行二度封装，实现api文档集中管理
+通过api文件和HTTP请求库（例如axios、fly.js）进行二度封装，实现api文档集中管理
 ```
-// api管理文件的key只要匹配到其中的methods方法名(不区分大小写)就会生成对应的以key为名的方法
+// api文件的key只要匹配到其中的methods方法名(不区分大小写)就会生成对应的以key为名的方法
 const server = {
   // 公共
   postFile: 'wap/file', // * 上传图片
@@ -24,6 +24,7 @@ await http.deleteFile({
 ```
 ## Options
 ```
+// 默认参数配置
 new BoxCat(server, engine, {
   methods: {
     'get': ['get'],

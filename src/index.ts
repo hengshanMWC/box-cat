@@ -25,16 +25,16 @@ interface Options {
   readonly rule?: string
 }
 export default class BoxCat {
-  server: ObjectString
+  apis: ObjectString
   engine: Engine
   options: Options
   sliceRegExp: RegExp
   paramsRegExp: RegExp
-  constructor (server: ObjectString, engine: Engine , options: Options = {}) {
-    this.server = server
+  [params: string]: any
+  constructor (apis: ObjectString, engine: Engine , options: Options = {}) {
+    this.apis = apis
     this.engine = engine
     this.defaults(options)
-    this.apiFor()
     if (typeof Proxy === 'function') {
       return createProxy(this)
     } else {
@@ -73,12 +73,12 @@ export default class BoxCat {
     this.createRegExp(this.options.rule)
   }
   protected apiFor (): void {
-    Object.keys(this.server).forEach(this.createIng.bind(this))
+    Object.keys(this.apis).forEach(this.createIng.bind(this))
   }
   protected createIng (key: string): void {
     const method: string = this.getMethod(key)
     if (method && this.engine[method]) {
-      const fn: Function = this.newFunction(method, this.server[key])
+      const fn: Function = this.newFunction(method, this.apis[key])
       this[key] = fn
     } else if (this.engine[method]) {
       console.warn(`BoxCat:engine没有${method}方法`)
