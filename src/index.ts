@@ -120,7 +120,7 @@ export default class BoxCat {
           i = params.findIndex(param => param === key)
           if (i !== -1) arr[i] = '/' + id[key]
         }
-        url = arr.reduce((total, currentValue, index) => `${total}/${currentValue}${urls[index + 1]}`, urls[0])
+        url = arr.reduce((total, currentValue, index) => `${total}${currentValue}${urls[index + 1]}`, urls[0])
       } else {
         url = `${urls[0]}/${id}${urls[1]}`
       }
