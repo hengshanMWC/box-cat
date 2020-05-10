@@ -59,4 +59,4 @@ param的匹配规则
 默认是：startsWith
 匹配方法 'startsWith' | 'endsWith' | 'includes'
 #### config
-其他配置
+其他配置,相当于axios的config
