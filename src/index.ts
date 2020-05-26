@@ -1,29 +1,6 @@
 import { getFormat, getESC, getRegFinish, createSliceRegExp, createParamsRegExp } from './utils/regExp'
 import createProxy from './utils/proxy'
-interface ObjectString {
-  [params: string]: string
-}
-interface ObjectStrings {
-  readonly [params: string]: string[]
-}
-type MethodsRule =
-  'startsWith' |
-  'endsWith' |
-  'includes'
-interface Engine {
-  get: Function,
-  post: Function,
-  put: Function,
-  delete: Function,
-  [params: string]: any,
-}
-interface Options {
-  readonly methods?: ObjectStrings,
-  mergeMethods?: ObjectStrings,
-  config?: object,
-  methodsRule?: MethodsRule,
-  readonly rule?: string
-}
+import { ObjectString, ObjectStrings, Engine, Options } from './ts-type'
 export default class BoxCat {
   apis: ObjectString
   engine: Engine
