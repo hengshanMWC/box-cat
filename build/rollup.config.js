@@ -7,7 +7,6 @@ const validateNpmPackageName = require('validate-npm-package-name')
 const camelcase = require('camelcase')
 const babel  = require('rollup-plugin-babel')
 const resolve  = require('rollup-plugin-node-resolve')
-const replace  = require('rollup-plugin-replace')
 const buble  = require("rollup-plugin-buble")
 const uglify  = require("rollup-plugin-uglify-es") // 压缩es6+代码
 const typescript  = require("rollup-plugin-typescript2")
@@ -106,10 +105,6 @@ const genConfig  = key => {
       }),
       typescript({
         typescript: tscompile
-      }),
-      // 内容替换
-      replace({
-        __VERSION__: version
       }),
       buble(),
       resolve(resolveOptions),
