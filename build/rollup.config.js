@@ -36,7 +36,7 @@ const builds = {
   'es': {
     entry: 'src/index.ts',
     // 当文件名包含 .min 时将会自动启用 terser 进行压缩
-    dest: `dist/${moduleName}.min.js`,
+    dest: `dist/${moduleName}.esm.min.js`,
     /* rollup 支持 5 种打包类型
       - amd   amd 规范
       - cjs   CommonJS 规范
@@ -44,14 +44,21 @@ const builds = {
       - iife  立即执行函数
       - umd   umd 规范
     */
-    format: 'es',
-    plugins: [],
-    // npm 包（打包时会一同打包指定的 npm 包）
-    // 具体配置请参考 https://github.com/rollup/rollup-plugin-node-resolve
-    resolveOptions: {},
-    // 外部包（打包时会忽略这些包）
-    external: [],
-  }
+    format: 'es'
+  },
+  'cjs': {
+    entry: 'src/index.ts',
+    // 当文件名包含 .min 时将会自动启用 terser 进行压缩
+    dest: `dist/${moduleName}.cjs.min.js`,
+    format: 'cjs'
+  },
+  'iife': {
+    entry: 'src/index.ts',
+    // 当文件名包含 .min 时将会自动启用 terser 进行压缩
+    dest: `dist/${moduleName}.global.min.js`,
+    format: 'iife',
+    name: 'BoxCat'
+  },
 }
 
 
