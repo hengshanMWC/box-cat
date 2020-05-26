@@ -1,4 +1,4 @@
-import BoxCat from '../../dist/index'
+import BoxCat from '../../src/index'
 import axios from 'axios'
 import { createServer, getUsers, apisDefault, apisParam } from './utils'
 const Fly = require('flyio/src/node/index.js')
@@ -31,6 +31,9 @@ test('axios', () => {
         list: 1,
         id: 2
       }),
+      defaultHttp.getListDetail({
+        list: 1
+      }),
       defaultHttp.postLogin()
     ])
   }, function () {
@@ -46,6 +49,9 @@ test('axios', () => {
       paramHttp.getListDetail({
         list: 1,
         id: 2
+      }),
+      defaultHttp.getListDetail({
+        list: 1
       }),
       paramHttp.login()
     ])
@@ -77,6 +83,9 @@ test('flyio', () => {
         list: 1,
         id: 2
       }),
+      defaultHttp.getListDetail({
+        list: 1
+      }),
       defaultHttp.postLogin()
     ])
   }, function () {
@@ -90,6 +99,9 @@ test('flyio', () => {
       paramHttp.getListDetail({
         list: 1,
         id: 2
+      }),
+      defaultHttp.getListDetail({
+        list: 1
       }),
       paramHttp.login()
     ])
