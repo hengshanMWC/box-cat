@@ -75,12 +75,13 @@ export function createServer (code, ...fns) {
   }).listen(code, function () {
     fns.forEach(fn => {
       fn()
-        .then(([getUser, postUser, putUser, deleteUser, getListDetail, postLogin]) => {
+        .then(([getUser, postUser, putUser, deleteUser, getListDetail, getListDetail2, postLogin]) => {
           expect(getUser.data).toEqual(getUsers)
           expect(postUser.data).toBe('post user')
           expect(putUser.data.author).toBe('abmao')
           expect(deleteUser.data).toBeTruthy()
           expect(getListDetail.data).toBe('/list/1/2')
+          expect(getListDetail2.data).toBe('/list/1')
           expect(postLogin.data).toEqual(getUsers)
           server.close()
         })
