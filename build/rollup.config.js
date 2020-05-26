@@ -1,12 +1,11 @@
 const rollup = require('rollup')
 const fs = require('fs')
 const path = require('path')
-const zlib = require('zlib')
-const terser = require('terser')
+const zlib = require('zlib') // 用于使用gzip算法进行文件压缩
+const terser = require('terser') // 用于Javascript代码压缩和美化
 const validateNpmPackageName = require('validate-npm-package-name')
-const camelcase = require('camelcase')
-const babel  = require('rollup-plugin-babel')
-const resolve  = require('rollup-plugin-node-resolve')
+const camelcase = require('camelcase') // 转驼峰拼写
+const babel  = require('rollup-plugin-babel') // 编译ES6+语法为ES2015 
 const buble  = require("rollup-plugin-buble")
 const uglify  = require("rollup-plugin-uglify-es") // 压缩es6+代码
 const typescript  = require("rollup-plugin-typescript2")
@@ -54,7 +53,7 @@ const builds = {
   'iife': {
     entry: 'src/index.ts',
     // 当文件名包含 .min 时将会自动启用 terser 进行压缩
-    dest: `dist/${moduleName}.global.min.js`,
+    dest: `dist/${moduleName}.global.js`,
     format: 'iife',
     name: 'BoxCat'
   },
@@ -64,7 +63,7 @@ const builds = {
 
 
 const genConfig  = key => {
-  const {entry, dest, format, plugins = [], external = [], resolveOptions = {}, name} = builds[key]
+  const {entry, dest, format, plugins = [], external = [], name} = builds[key]
   const config = {
     input: entry,
     output: {
@@ -88,7 +87,14 @@ const genConfig  = key => {
         exclude: 'node_modules/**',
         runtimeHelpers: true,
         "presets": [
-          "@babel/preset-env",
+          [
+            "@babel/preset-env", // 自定义转es
+            {
+              "targets": {
+                "ie": "11"
+              }
+            }
+          ]
         ],
         plugins: [
           [
@@ -107,7 +113,6 @@ const genConfig  = key => {
         typescript: tscompile
       }),
       buble(),
-      resolve(resolveOptions),
     ].concat(plugins),
 
     external: [].concat(external),
