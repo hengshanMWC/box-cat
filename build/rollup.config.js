@@ -3,14 +3,11 @@ const fs = require('fs')
 const path = require('path')
 const zlib = require('zlib') // 用于使用gzip算法进行文件压缩
 const terser = require('terser') // 用于Javascript代码压缩和美化
-const validateNpmPackageName = require('validate-npm-package-name')
+const validateNpmPackageName = require('validate-npm-package-name') // 判断是否合法的npm包
 const camelcase = require('camelcase') // 转驼峰拼写
-const babel  = require('rollup-plugin-babel') // 编译ES6+语法为ES2015 
-const buble  = require("rollup-plugin-buble")
-const uglify  = require("rollup-plugin-uglify-es") // 压缩es6+代码
 const typescript  = require("rollup-plugin-typescript2")
 const tscompile  = require("typescript")
-let {version, name}  = require('../package.json')
+let { name }  = require('../package.json')
 let moduleName = name
 // 检查是否是合法的 npm 包名
 if (!validateNpmPackageName(moduleName)) {
@@ -53,7 +50,7 @@ const builds = {
   'iife': {
     entry: 'src/index.ts',
     // 当文件名包含 .min 时将会自动启用 terser 进行压缩
-    dest: `dist/${moduleName}.global.js`,
+    dest: `dist/${moduleName}.global.min.js`,
     format: 'iife',
     name: 'BoxCat'
   },
@@ -73,48 +70,10 @@ const genConfig  = key => {
       name: name || moduleName,
     },
     plugins: [
-      uglify({
-        compress: {
-          pure_getters: true,
-          unsafe: true,
-          unsafe_comps: true,
-          warnings: false
-        }
-      }),
-      // babel
-      babel({
-        babelrc: false,
-        exclude: 'node_modules/**',
-        runtimeHelpers: true,
-        "presets": [
-          [
-            "@babel/preset-env", // 自定义转es
-            {
-              "targets": {
-                "ie": "11"
-              }
-            }
-          ]
-        ],
-        plugins: [
-          [
-            "@babel/plugin-transform-runtime",
-            {
-              "absoluteRuntime": false,
-              "corejs": false,
-              "helpers": true,
-              "regenerator": true,
-              "useESModules": false
-            }
-          ]
-        ]
-      }),
       typescript({
         typescript: tscompile
       }),
-      buble(),
     ].concat(plugins),
-
     external: [].concat(external),
     // 监听
     watch: {

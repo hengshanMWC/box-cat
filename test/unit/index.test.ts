@@ -1,4 +1,4 @@
-import BoxCat from '../../src/index'
+import BoxCat from '../../dist/index'
 import axios from 'axios'
 import { createServer, getUsers, apisDefault, apisParam } from './utils'
 const Fly = require('flyio/src/node/index.js')
