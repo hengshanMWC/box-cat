@@ -50,9 +50,9 @@ export default class BoxCat {
     this.createRegExp(this.options.rule)
   }
   protected apiFor (): void {
-    Object.keys(this.apis).forEach(this.createIng.bind(this))
+    Object.keys(this.apis).forEach(this.createApi.bind(this))
   }
-  protected createIng (key: string): void {
+  protected createApi (key: string): void {
     const method: string = this.getMethod(key)
     if (method && this.engine[method]) {
       const fn: Function = this.newFunction(method, this.apis[key])
