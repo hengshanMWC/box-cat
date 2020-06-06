@@ -2,7 +2,7 @@ interface ObjectString {
   [params: string]: string;
 }
 interface ObjectStrings {
-  readonly [params: string]: string[];
+  [params: string]: string[];
 }
 declare type MethodsRule = 'startsWith' | 'endsWith' | 'includes';
 interface Engine {
@@ -13,13 +13,19 @@ interface Engine {
   [params: string]: any;
 }
 interface Options {
-  readonly methods?: ObjectStrings;
+  methods?: ObjectStrings;
   mergeMethods?: ObjectStrings;
   config?: object;
   methodsRule?: MethodsRule;
-  readonly rule?: string;
+  rule?: string;
 }
 interface extract {
   sliceRegExp: RegExp
   paramsRegExp: RegExp
+}
+interface BoxCat {
+  [params: string]: apiFunction['fetch']
+}
+interface apiFunction {
+  fetch: (id?: number | string | object, data?: object, config?: object) => Function
 }

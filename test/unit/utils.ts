@@ -1,3 +1,8 @@
+// import { createAll, createProxy } from '../../a/boxCat.esm.min'
+import { createAll, createProxy } from '../../src/index'
+// const { createAll, createProxy} = require('../../src/index.js')
+// const { createAll, createProxy } = require('../../a/boxCat.cjs.min.js')
+
 const http = require('http')
 const url = require('url')
 const commonApis = {
@@ -16,20 +21,103 @@ const paramApi = {
   deleteUser: '/user/{id}',
   login: '/login'
 }
-export const getUsers = {
+const getUsers = {
   name: 'BoxCat',
   author: 'mwc',
   url: 'https://github.com/hengshanMWC/film'
 }
-export const apisDefault = {
+const apisDefault = {
   ...commonApis,
   ...defaultApi
 }
-export const apisParam = {
+const apisParam = {
   ...commonApis,
   ...paramApi
 }
-export function createServer (code, ...fns) {
+export default function start (engine: Object, port: number, isParams?: boolean) {
+  const [defaultHttp, paramHttp] = createBoxCat(engine)
+  const [defaultProxyHttp, paramProxyHttp] = createBoxCat(engine, true)
+  createServer(port, ...getPrmises(defaultHttp, paramHttp, isParams), ...getPrmises(defaultProxyHttp, paramProxyHttp, isParams))
+}
+function createBoxCat (engine, isProxy?: boolean) {
+  // let param = {
+  //   mergeMethods: {
+  //     'post': ['post', 'login']
+  //   },
+  //   rule: '{param}',
+  //   methodsRule: 'includes',
+  //   config: {
+  //     timeout: 1000
+  //   }
+  // }
+  let defaultHttp
+  let paramHttp
+  if (isProxy) {
+    defaultHttp = createProxy(apisDefault, engine)
+    paramHttp = createProxy(apisParam, engine, {
+    mergeMethods: {
+      'post': ['post', 'login']
+    },
+    rule: '{param}',
+    methodsRule: 'includes',
+    config: {
+      timeout: 1000
+    }
+  })
+  } else {
+    defaultHttp = createAll(apisDefault, engine)
+    paramHttp = createAll(apisParam, engine, {
+    mergeMethods: {
+      'post': ['post', 'login']
+    },
+    rule: '{param}',
+    methodsRule: 'includes',
+    config: {
+      timeout: 1000
+    }
+  })
+  }
+  return [defaultHttp, paramHttp]
+}
+function getPrmises (defaultHttp, paramHttp, isParams?: boolean) {
+  const getUsersData = isParams ? { params: getUsers } : getUsers
+  return [function () {
+    return Promise.all([
+      defaultHttp.getUsers(getUsersData),
+      defaultHttp.postUser(getUsers),
+      defaultHttp.putUser(1, {
+        author: 'abmao'
+      }),
+      defaultHttp.deleteUser(1),
+      defaultHttp.getListDetail({
+        list: 1,
+        id: 2
+      }),
+      defaultHttp.getListDetail({
+        list: 1
+      }),
+      defaultHttp.postLogin()
+    ])
+  }, function () {
+    return Promise.all([
+      paramHttp.getUsers(getUsersData),
+      paramHttp.postUser(getUsers),
+      paramHttp.putUser(1, {
+        author: 'abmao'
+      }),
+      paramHttp.deleteUser(1),
+      paramHttp.getListDetail({
+        list: 1,
+        id: 2
+      }),
+      paramHttp.getListDetail({
+        list: 1
+      }),
+      paramHttp.login()
+    ])
+  }]
+}
+function createServer (code, ...fns) {
   const server = http.createServer(function (req, res) {
     var parsed = url.parse(req.url, true);
     if (parsed.pathname === '/login') {
