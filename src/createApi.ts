@@ -11,14 +11,14 @@ export function isCreate (key: string, method: string, engine: Engine): boolean 
   }
   return false
 }
-export function newFunction (method: string, url: string, engine: Engine, sliceRegExp: RegExp, paramsRegExp: RegExp, _config: Object): Function {
+export function newFunction (method: string, url: string, engine: Engine, sliceRegExp: RegExp, paramsRegExp: RegExp, _config: Object): apiFunction['fetch'] {
   const urls: string[] = url.split(sliceRegExp)
   const urlMatch: string[] = url.match(sliceRegExp)
   let params: string[] = []
   if (urlMatch) {
     params = urlMatch.map(param => param.replace(paramsRegExp, '$1'))
   }
-  return (id: number | string | object, data?: object, config?: object): Function => {
+  return (id?: number | string | object, data?: object, config?: object): Function => {
     return engine[method](...getParam(urls, params, id, data, config, _config))
   }
 }

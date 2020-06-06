@@ -18,4 +18,3 @@ function deleteFolder(path) {
   }
 }
 deleteFolder(path.join(__dirname, '../dist/utils'))
-fs.unlinkSync(path.join(__dirname, '../dist/ts-type.d.ts'))

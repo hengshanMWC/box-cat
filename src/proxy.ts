@@ -1,8 +1,8 @@
-export default function (boxCat: any) {
-  return new Proxy (boxCat, {
+export default function (fn: (key: string) => apiFunction['fetch']): BoxCat{
+  return new Proxy ({}, {
     get: function (target, propKey: string, receiver) {
       if (!target[propKey]) {
-        target.createIng(propKey)
+        target[propKey] = fn(propKey)
       }
       return Reflect.get(target, propKey, receiver);
     }
