@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "./dist",
+    "declarationDir": "types",
     "lib": [
       "ES6",
       "DOM"
-    ]
+    ],
+    "noUnusedLocals": true, // 若有未使用的局部变量则抛错。
+    "noUnusedParameters": true, // 	若有未使用的参数则抛错
   },
   "include": [
-    "src/**/*", "src/global.d.ts"
+    "src/**/*", "src/global.d.ts", "global.d.ts"
   ],
   "exclude": [
-      "node_modules"
+    "test"
   ]
 }

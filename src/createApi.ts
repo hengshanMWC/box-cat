@@ -1,4 +1,4 @@
-export function getMethod (name: string, methodsRule: MethodsRule, methods: ObjectStrings): string {
+export function getMethod (name: string, methodsRule: MethodsRule, methods: ObjectStrings): string | undefined {
   return Object.keys(methods)
           .find(key => !!methods[key].find(val => name.toLocaleLowerCase()[methodsRule](val.toLocaleLowerCase())))
 }
@@ -11,19 +11,19 @@ export function isCreate (key: string, method: string, engine: Engine): boolean 
   }
   return false
 }
-export function newFunction (method: string, url: string, engine: Engine, sliceRegExp: RegExp, paramsRegExp: RegExp, _config: Object): apiFunction['fetch'] {
+export function newFunction (method: string, url: string, engine: Engine, sliceRegExp: RegExp, paramsRegExp: RegExp, _config: Object): apiFunction {
   const urls: string[] = url.split(sliceRegExp)
-  const urlMatch: string[] = url.match(sliceRegExp)
+  const urlMatch: string[] | null = url.match(sliceRegExp)
   let params: string[] = []
   if (urlMatch) {
     params = urlMatch.map(param => param.replace(paramsRegExp, '$1'))
   }
-  return (id?: number | string | object, data?: object, config?: object): Function => {
-    return engine[method](...getParam(urls, params, id, data, config, _config))
+  return (id?: id , data?: object, config?: object, ...rest): Function => {
+    return engine[method](...getParam(urls, params, id, data, config, _config), ...rest)
   }
 }
 // 解析params路径
-function getParam (urls: string[], params: string[], id: number | string | object, data?: object, config?: object, _config?: object): [string, number | string | object, object] {
+function getParam (urls: string[], params: string[], id?: id , data?: object, config?: object, _config?: object): [string, id , object] {
   if (urls.length === 1) {
     return [
       urls[0],

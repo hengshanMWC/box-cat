@@ -1,5 +1,5 @@
 // import { createAll, createProxy } from '../../a/boxCat.esm.min'
-import { createAll, createProxy } from '../../src/index'
+import { createAll, createProxy } from '../src/index'
 // const { createAll, createProxy} = require('../../src/index.js')
 // const { createAll, createProxy } = require('../../a/boxCat.cjs.min.js')
 
@@ -40,42 +40,24 @@ export default function start (engine: Object, port: number, isParams?: boolean)
   createServer(port, ...getPrmises(defaultHttp, paramHttp, isParams), ...getPrmises(defaultProxyHttp, paramProxyHttp, isParams))
 }
 function createBoxCat (engine, isProxy?: boolean) {
-  // let param = {
-  //   mergeMethods: {
-  //     'post': ['post', 'login']
-  //   },
-  //   rule: '{param}',
-  //   methodsRule: 'includes',
-  //   config: {
-  //     timeout: 1000
-  //   }
-  // }
+  const param: any = {
+    mergeMethods: {
+      'post': ['post', 'login']
+    },
+    rule: '{param}',
+    methodsRule: 'includes',
+    config: {
+      timeout: 1000
+    }
+  }
   let defaultHttp
   let paramHttp
   if (isProxy) {
     defaultHttp = createProxy(apisDefault, engine)
-    paramHttp = createProxy(apisParam, engine, {
-    mergeMethods: {
-      'post': ['post', 'login']
-    },
-    rule: '{param}',
-    methodsRule: 'includes',
-    config: {
-      timeout: 1000
-    }
-  })
+    paramHttp = createProxy(apisParam, engine, param)
   } else {
     defaultHttp = createAll(apisDefault, engine)
-    paramHttp = createAll(apisParam, engine, {
-    mergeMethods: {
-      'post': ['post', 'login']
-    },
-    rule: '{param}',
-    methodsRule: 'includes',
-    config: {
-      timeout: 1000
-    }
-  })
+    paramHttp = createAll(apisParam, engine, param)
   }
   return [defaultHttp, paramHttp]
 }
