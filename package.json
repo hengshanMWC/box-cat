@@ -6,10 +6,9 @@
   "model": "/dist/boxCat.esm.min.js",
   "types": "/dist/index.d.ts",
   "scripts": {
-    "build": "tsc && node build/rollup.config.js && node build/remove.config.js",
+    "build": "node build/rollup.config.js",
     "test:cov": "jest --coverage",
-    "test": "jest",
-    "debugger": "node --inspect-brk ./node_modules/jest/bin/jest --runInBand --no-cache --no-watchman"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

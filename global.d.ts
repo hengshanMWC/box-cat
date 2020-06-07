@@ -1,10 +1,13 @@
+type id = number | string | object
+type MethodsRule = 'startsWith' | 'endsWith' | 'includes';
+type apiFunction = (id?: id , data?: object, config?: object, ...rest: any[]) => Function
+type createdApiFunction = (key: string) => apiFunction
 interface ObjectString {
   [params: string]: string;
 }
 interface ObjectStrings {
   [params: string]: string[];
 }
-declare type MethodsRule = 'startsWith' | 'endsWith' | 'includes';
 interface Engine {
   get: Function;
   post: Function;
@@ -24,8 +27,5 @@ interface extract {
   paramsRegExp: RegExp
 }
 interface BoxCat {
-  [params: string]: apiFunction['fetch']
-}
-interface apiFunction {
-  fetch: (id?: number | string | object, data?: object, config?: object) => Function
+  [params: string]: apiFunction
 }

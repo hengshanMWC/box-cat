@@ -1,4 +1,4 @@
-export default function (fn: (key: string) => apiFunction['fetch']): BoxCat{
+export default function (fn: createdApiFunction): BoxCat{
   return new Proxy ({}, {
     get: function (target, propKey: string, receiver) {
       if (!target[propKey]) {
