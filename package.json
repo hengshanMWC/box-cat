@@ -4,7 +4,6 @@
   "description": "对暴露get,post之类接口的实例（例如axios、fly.io）二度封装",
   "main": "/dist/boxCat.cjs.min.js",
   "model": "/dist/boxCat.esm.min.js",
-  "types": "/dist/index.d.ts",
   "scripts": {
     "build": "node build/rollup.config.js",
     "test:cov": "jest --coverage",
@@ -39,8 +38,9 @@
     "terser": "^4.6.13",
     "ts-jest": "^25.4.0",
     "ts-node": "^8.10.1",
-    "typescript": "^3.8.3",
     "validate-npm-package-name": "^3.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "typescript": "^3.9.5"
+  }
 }

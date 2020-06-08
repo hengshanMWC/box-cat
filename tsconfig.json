@@ -10,9 +10,6 @@
     "noUnusedParameters": true, // 	若有未使用的参数则抛错
   },
   "include": [
-    "src/**/*", "src/global.d.ts", "global.d.ts"
-  ],
-  "exclude": [
-    "test"
+    "src/**/*", "src/global.d.ts"
   ]
 }
