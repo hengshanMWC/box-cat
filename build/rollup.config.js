@@ -6,7 +6,7 @@ const terser = require('terser') // 用于Javascript代码压缩和美化
 const validateNpmPackageName = require('validate-npm-package-name') // 判断是否合法的npm包
 const camelcase = require('camelcase') // 转驼峰拼写
 const typescript  = require("rollup-plugin-typescript2")
-// const tscompile  = require("typescript")
+const tscompile  = require("typescript")
 let { name }  = require('../package.json')
 let moduleName = name
 // 检查是否是合法的 npm 包名
@@ -58,7 +58,6 @@ const builds = {
 
 
 
-let useTsconfigDeclarationDir = true
 const genConfig  = key => {
   const {entry, dest, format, plugins = [], external = [], name} = builds[key]
   const config = {
@@ -71,8 +70,7 @@ const genConfig  = key => {
     },
     plugins: [
       typescript({
-        // typescript: tscompile,
-        useTsconfigDeclarationDir // 根据tsconfig.json生产配置文件
+        typescript: tscompile,
       }),
     ].concat(plugins),
     external: [].concat(external),
