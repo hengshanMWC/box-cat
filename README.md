@@ -1,47 +1,46 @@
 ## Features
+* 自动生成http函数
 * 接口集中化维护
 * 解决param路径痛点
 ## introduction
-通过接口接文件和HTTP请求库（例如axios、fly.js）进行二度封装，实现api文档集中管理
+通过接口对象和HTTP请求库（例如axios、fly.js）进行二度封装，实现api集中管理
 ```
 // a.js
-import { createAll, createProxy } from 'box-cat'
-// 接口文件的key只要匹配到其中的methods(不区分大小写)就会生成对应的以key为名的方法
+import { createApi, createApiProxy } from 'box-cat'
+// server其中的key只要匹配到其中的method(不区分大小写)就会生成对应的以key为名的方法
 const server = {
   // 方法名: 接口
   postFile: 'wap/file',
   deleteFile: 'wap/files/:imgId',
   getUserUpFile: 'wap/file/:userId/:imgId
 }
-export default {
-  ...createAll(server, axios)
-}
-// createProxy返回一个proxy
-// export default createProxy(server, axios)
+export default createApi(server, axios)
+// createApiProxy返回一个proxy
+// export default createApiProxy(server, axios)
 ```
 ```
 // a1.js
-import { postFile, deleteFile } from ''./a.js
+import http from './a.js'
 // 方法使用和对应的HTTP请求库一样
-postFile({id: 1}).then().catch()
+http.postFile({id: 1}).then().catch()
 /*
 * 如果路径带的有param，第一个参数是params，第二个是data，第3个是http请求库的其他配置项。非param则第一个是data，第二个是其他配置项
 * 当你有多段param的时候，传的是对象
 */ 
-await deleteFile(1)
-await getUserUpFile({
+await http.deleteFile(1)
+await http.getUserUpFile({
   userId: 1,
   imgId: 10
 })
 ```
 ## method
-__createAll__：返回所有接口方法，支持按需引入
+__createApi__：返回所有接口方法
 
-__createProxy__：返回Proxy实例，惰性生成接口方法。当判断不支持proxy时，内部会优雅降级到createAll
+__createApiProxy__：返回Proxy实例，惰性生成接口方法。当判断不支持proxy时，内部会优雅降级为createApi
 ## Options
 ```
-// createAll和createProxy默认参数配置
-createAll(server, engine, {
+// createApi和createApiProxy默认参数配置
+createApi(server, engine, {
   methods: {
     'get': ['get'],
     'post': ['post'],
