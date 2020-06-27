@@ -1,6 +1,6 @@
 import createFactory from './createFactory'
 import newProxy from './proxy'
-export function createApi (apis: ObjectString, engine: Engine , options: Options = {}): BoxCat {
+export function createApis (apis: ObjectString, engine: Engine , options: Options = {}): BoxCat {
   const createApiFunction = createFactory(apis, engine, options)
   let apiFun: BoxCat = {}
   Object.keys(apis).forEach(key => {
@@ -8,10 +8,10 @@ export function createApi (apis: ObjectString, engine: Engine , options: Options
   })
   return apiFun
 }
-export function createApiProxy (apis: ObjectString, engine: Engine , options: Options = {}): BoxCat {
+export function createProxy (apis: ObjectString, engine: Engine , options: Options = {}): BoxCat {
   if (typeof Proxy !== 'undefined') {
     return newProxy(createFactory(apis, engine, options))
   } else {
-    return createApi(apis, engine, options)
+    return createApis(apis, engine, options)
   }
 }
