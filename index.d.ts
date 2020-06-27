@@ -24,5 +24,5 @@ export interface BoxCat {
 }
 export type id = number | string | object
 export type apiFunction = (id?: id , data?: object, config?: object, ...rest: any[]) => Function
-export function createAll(apis: ObjectString, engine: Engine, options?: Options): BoxCat;
-export function createProxy(apis: ObjectString, engine: Engine, options?: Options): BoxCat;
+export function createApi(apis: ObjectString, engine: Engine, options?: Options): BoxCat;
+export function createApiProxy(apis: ObjectString, engine: Engine, options?: Options): BoxCat;

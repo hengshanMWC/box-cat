@@ -1,7 +1,7 @@
-// import { createAll, createProxy } from '../../a/boxCat.esm.min'
-import { createAll, createProxy } from '../src/index'
-// const { createAll, createProxy} = require('../../src/index.js')
-// const { createAll, createProxy } = require('../../a/boxCat.cjs.min.js')
+// import { createApi, createApiProxy } from '../../a/boxCat.esm.min'
+import { createApi, createApiProxy } from '../src/index'
+// const { createApi, createApiProxy} = require('../../src/index.js')
+// const { createApi, createApiProxy } = require('../../a/boxCat.cjs.min.js')
 
 const http = require('http')
 const url = require('url')
@@ -53,11 +53,11 @@ function createBoxCat (engine, isProxy?: boolean) {
   let defaultHttp
   let paramHttp
   if (isProxy) {
-    defaultHttp = createProxy(apisDefault, engine)
-    paramHttp = createProxy(apisParam, engine, param)
+    defaultHttp = createApiProxy(apisDefault, engine)
+    paramHttp = createApiProxy(apisParam, engine, param)
   } else {
-    defaultHttp = createAll(apisDefault, engine)
-    paramHttp = createAll(apisParam, engine, param)
+    defaultHttp = createApi(apisDefault, engine)
+    paramHttp = createApi(apisParam, engine, param)
   }
   return [defaultHttp, paramHttp]
 }
