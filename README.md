@@ -6,7 +6,7 @@
 通过接口对象和HTTP请求库（例如axios、fly.js）进行二度封装，实现api集中管理
 ```
 // a.js
-import { createApi, createApiProxy } from 'box-cat'
+import { createApis, createProxy } from 'box-cat'
 // server其中的key只要匹配到其中的method(不区分大小写)就会生成对应的以key为名的方法
 const server = {
   // 方法名: 接口
@@ -14,9 +14,9 @@ const server = {
   deleteFile: 'wap/files/:imgId',
   getUserUpFile: 'wap/file/:userId/:imgId
 }
-export default createApi(server, axios)
+export default createApis(server, axios)
 // createApiProxy返回一个proxy
-// export default createApiProxy(server, axios)
+// export default createProxy(server, axios)
 ```
 ```
 // a1.js
@@ -40,7 +40,7 @@ __createApiProxy__：返回Proxy实例，惰性生成接口方法。当判断不
 ## Options
 ```
 // createApi和createApiProxy默认参数配置
-createApi(server, engine, {
+createApis(server, engine, {
   methods: {
     'get': ['get'],
     'post': ['post'],
