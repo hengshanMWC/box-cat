@@ -1,15 +1,17 @@
 ## Features
-* 自动生成http函数
-* 接口集中化维护
-* 解决param路径痛点
-## introduction
-通过接口对象和HTTP请求库（例如axios、fly.js）进行二度封装，实现api集中管理
+Api factory
+## Scene
+        请求数据这部分，贯穿着整个前端生涯，不知你又是怎样去管理这部分模块。接口一对一写成函数然后export出去？直接this.$fetch('userInfo/1')?前者冗余，后者碎片化不好维护。那些业务场景简单的还好，如果像后台管理那种，动不动上百个接口，如果不用一个足够简单的结构去维护这些接口，越到后期，成本越昂贵。
+        所以，box-cat就是为了解决这个痛点而生，通过足够简单的结构object来维护接口，并自动生成接口函数
+## Introduction
+通过接口对象和HTTP请求库（例如axios、fly.js）进行二度封装，实现api集中管理。
+
 ```
 // a.js
 import { createApis, createProxy } from 'box-cat'
-// server其中的key只要匹配到其中的method(不区分大小写)就会生成对应的以key为名的方法
+// server其中的key只要匹配到其中的method(不区分大小写)就会生成对应的以key为名的接口函数
 const server = {
-  // 方法名: 接口
+  // 接口函数: 接口
   postFile: 'wap/file',
   deleteFile: 'wap/files/:imgId',
   getUserUpFile: 'wap/file/:userId/:imgId
@@ -64,7 +66,7 @@ api的管理文件，key不区分大小写
 HTTP 请求库(axios,fly.io之类)
 ### options
 ##### methods
-自定义methods
+自定义methods,用于匹配接口函数名
 例如：'post': ['ADD', 'post', 'submit']
 ##### mergeMethods
 合并methods
