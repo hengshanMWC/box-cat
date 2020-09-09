@@ -15,3 +15,4 @@ export function createProxy (apis: ObjectString, engine: Engine , options: Optio
     return createApis(apis, engine, options)
   }
 }
+export const createAll = createApis
