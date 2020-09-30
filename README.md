@@ -5,6 +5,11 @@ Api factory
         所以，box-cat就是为了解决这个痛点而生，通过足够简单的结构object来维护接口，并自动生成接口函数
 ## Introduction
 通过接口对象和HTTP请求库（例如axios、fly.js）进行二度封装，实现api集中管理。
+```js
+// script引入
+<script src="https://unpkg.com/box-cat/dist/boxCat.js"></script>
+BoxCat.createProxy
+```
 
 ```
 // a.js
