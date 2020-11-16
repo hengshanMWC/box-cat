@@ -8,7 +8,7 @@ interface ObjectString {
 interface ObjectStrings {
   [params: string]: string[];
 }
-interface Engine {
+interface Response {
   get: Function;
   post: Function;
   put: Function;

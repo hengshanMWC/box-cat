@@ -34,12 +34,12 @@ const apisParam = {
   ...commonApis,
   ...paramApi
 }
-export default function start (engine: Object, port: number, isParams?: boolean) {
-  const [defaultHttp, paramHttp] = createBoxCat(engine)
-  const [defaultProxyHttp, paramProxyHttp] = createBoxCat(engine, true)
+export default function start (response: Object, port: number, isParams?: boolean) {
+  const [defaultHttp, paramHttp] = createBoxCat(response)
+  const [defaultProxyHttp, paramProxyHttp] = createBoxCat(response, true)
   createServer(port, ...getPrmises(defaultHttp, paramHttp, isParams), ...getPrmises(defaultProxyHttp, paramProxyHttp, isParams))
 }
-function createBoxCat (engine, isProxy?: boolean) {
+function createBoxCat (response, isProxy?: boolean) {
   const param: any = {
     mergeMethods: {
       'post': ['post', 'login']
@@ -53,11 +53,11 @@ function createBoxCat (engine, isProxy?: boolean) {
   let defaultHttp
   let paramHttp
   if (isProxy) {
-    defaultHttp = createProxy(apisDefault, engine)
-    paramHttp = createProxy(apisParam, engine, param)
+    defaultHttp = createProxy(apisDefault, response)
+    paramHttp = createProxy(apisParam, response, param)
   } else {
-    defaultHttp = createApis(apisDefault, engine)
-    paramHttp = createApis(apisParam, engine, param)
+    defaultHttp = createApis(apisDefault, response)
+    paramHttp = createApis(apisParam, response, param)
   }
   return [defaultHttp, paramHttp]
 }

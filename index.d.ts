@@ -5,7 +5,7 @@ export interface ObjectString {
   [params: string]: string;
 }
 export type MethodsRule = 'startsWith' | 'endsWith' | 'includes';
-export interface Engine {
+export interface Response {
   get: Function;
   post: Function;
   put: Function;
@@ -24,5 +24,5 @@ export interface BoxCat {
 }
 export type id = number | string | object
 export type apiFunction = (id?: id , data?: object, config?: object, ...rest: any[]) => Function
-export function createApis(apis: ObjectString, engine: Engine, options?: Options): BoxCat;
-export function createProxy(apis: ObjectString, engine: Engine, options?: Options): BoxCat;
+export function createApis(apis: ObjectString, response: Response, options?: Options): BoxCat;
+export function createProxy(apis: ObjectString, response: Response, options?: Options): BoxCat;

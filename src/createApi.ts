@@ -2,16 +2,16 @@ export function getMethod (name: string, methodsRule: MethodsRule, methods: Obje
   return Object.keys(methods)
           .find(key => !!methods[key].find(val => name.toLocaleLowerCase()[methodsRule](val.toLocaleLowerCase())))
 }
-export function isCreate (key: string, method: string, engine: Engine): boolean {
-  if (method && engine[method]) return true
-  if (engine[method]) {
+export function isCreate (key: string, method: string, response: Response): boolean {
+  if (method && response[method]) return true
+  if (response[method]) {
     console.warn(`BoxCat:engine没有${method}方法`)
   } else {
     console.warn(`BoxCat:没有匹配到${key}所需的请求方式`)
   }
   return false
 }
-export function newFunction (method: string, url: string, engine: Engine, sliceRegExp: RegExp, paramsRegExp: RegExp, _config: Object): apiFunction {
+export function newFunction (method: string, url: string, response: Response, sliceRegExp: RegExp, paramsRegExp: RegExp, _config: Object): apiFunction {
   const urls: string[] = url.split(sliceRegExp)
   const urlMatch: string[] | null = url.match(sliceRegExp)
   let params: string[] = []
@@ -19,7 +19,7 @@ export function newFunction (method: string, url: string, engine: Engine, sliceR
     params = urlMatch.map(param => param.replace(paramsRegExp, '$1'))
   }
   return (id?: id , data?: object, config?: object, ...rest): Function => {
-    return engine[method](...getParam(urls, params, id, data, config, _config), ...rest)
+    return response[method](...getParam(urls, params, id, data, config, _config), ...rest)
   }
 }
 // 解析params路径

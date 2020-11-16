@@ -1,6 +1,6 @@
 import createOptions from './createOptions'
 import { getMethod, isCreate, newFunction } from './createApi'
-export default function createFactory (apis: ObjectString, engine: Engine , options: Options = {}): createdApiFunction {
+export default function createFactory (apis: ObjectString, response: Response , options: Options = {}): createdApiFunction {
   const {
     processOptions,
     paramsRegExp,
@@ -9,8 +9,8 @@ export default function createFactory (apis: ObjectString, engine: Engine , opti
   let method: string
   return function (key: string): apiFunction {
     method = getMethod(key, processOptions.methodsRule, processOptions.methods)
-    if (isCreate(key, method, engine)) {
-      return newFunction(method, apis[key], engine, sliceRegExp, paramsRegExp, processOptions.config)
+    if (isCreate(key, method, response)) {
+      return newFunction(method, apis[key], response, sliceRegExp, paramsRegExp, processOptions.config)
     }
   }
 }

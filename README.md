@@ -47,7 +47,7 @@ __createApiProxy__：返回Proxy实例，惰性生成接口方法。当判断不
 ## Options
 ```
 // createApi和createApiProxy默认参数配置
-createApis(server, engine, {
+createApis(server, response, {
   methods: {
     'get': ['get'],
     'post': ['post'],
@@ -67,7 +67,7 @@ createApis(server, engine, {
 ```
 ### server
 api的管理文件，key不区分大小写
-### engine
+### response
 HTTP 请求库(axios,fly.io之类)
 ### options
 ##### methods

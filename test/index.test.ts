@@ -2,14 +2,14 @@ import axios from 'axios'
 import start from './utils'
 const Fly = require('flyio/src/node/index.js')
 test('axios', () => {
-  const engine = axios.create({
+  const response = axios.create({
     baseURL: 'http://localhost:4444'
   });
-  start(engine, 4444, true)
+  start(response, 4444, true)
 })
 test('flyio', () => {
-  const engine = new Fly();
-  engine.config.baseURL = 'http://localhost:4445'
-  start(engine, 4445)
+  const response = new Fly();
+  response.config.baseURL = 'http://localhost:4445'
+  start(response, 4445)
 })
 
