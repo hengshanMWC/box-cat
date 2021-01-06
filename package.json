@@ -28,7 +28,7 @@
   "homepage": "https://github.com/hengshanMWC/film#readme",
   "devDependencies": {
     "@types/jest": "^25.2.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-jest": "^25.5.1",
     "camelcase": "^6.0.0",
     "flyio": "^0.6.14",
