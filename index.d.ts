@@ -1,3 +1,11 @@
+export interface Extract {
+  sliceRegExp: RegExp
+  paramsRegExp: RegExp
+}
+export interface NewOptions extends Extract {
+  processOptions: Options
+}
+export type createdApiFunction = (key: string) => apiFunction
 export interface ObjectStrings {
   [params: string]: string[];
 }

@@ -1,3 +1,4 @@
+import { MethodsRule, apiFunction, ObjectStrings, id } from '../index.d'
 export function getMethod (name: string, methodsRule: MethodsRule, methods: ObjectStrings): string | undefined {
   return Object.keys(methods)
           .find(key => !!methods[key].find(val => name.toLocaleLowerCase()[methodsRule](val.toLocaleLowerCase())))

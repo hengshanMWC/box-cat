@@ -1,7 +1,6 @@
+import { NewOptions, Extract, Options, ObjectStrings } from '../index.d'
 import { getFormat, getESC, getRegFinish, createSliceRegExp, createParamsRegExp } from './utils/regExp'
-interface newOptions extends extract {
-  processOptions: Options
-}
+
 function defaults (options: Options): Options {
   const defaultOptions: Options = {
     methods: {
@@ -25,7 +24,7 @@ function defaults (options: Options): Options {
   }
   return Object.assign({}, defaultOptions, options)
 }
-function createRegExp (str: string): extract {
+function createRegExp (str: string): Extract {
   const arr: string[] = getFormat(str)
   arr[0] = getESC(arr[0])
   const paramsRegExp = createParamsRegExp(arr[0], arr[1])
@@ -36,7 +35,7 @@ function createRegExp (str: string): extract {
     sliceRegExp
   }
 }
-export default function createOptions (options: Options = {}): newOptions {
+export default function createOptions (options: Options = {}): NewOptions {
   const processOptions = defaults(options)
   const {
     paramsRegExp,

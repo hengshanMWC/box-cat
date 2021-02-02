@@ -1,3 +1,4 @@
+import { BoxCat, createdApiFunction } from '../index.d'
 export default function (fn: createdApiFunction): BoxCat{
   return new Proxy ({}, {
     get: function (target, propKey: string, receiver) {

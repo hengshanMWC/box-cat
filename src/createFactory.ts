@@ -1,3 +1,4 @@
+import { ObjectString, apiFunction, Options } from '../index.d'
 import createOptions from './createOptions'
 import { getMethod, isCreate, newFunction } from './createApi'
 export default function createFactory (apis: ObjectString, response: Response , options: Options = {}): createdApiFunction {

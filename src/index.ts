@@ -1,3 +1,4 @@
+import { BoxCat, ObjectString } from '../index.d'
 import createFactory from './createFactory'
 import newProxy from './proxy'
 export function createApis (apis: ObjectString, response: Response , options: Options = {}): BoxCat {
